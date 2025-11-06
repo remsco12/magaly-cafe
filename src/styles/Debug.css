@@ -1,0 +1,44 @@
+/* DEBUG - Styles pour forcer l'affichage */
+.debug-cart-item {
+  border: 2px solid red !important;
+  background: yellow !important;
+}
+
+.debug-quantity-controls {
+  border: 2px solid blue !important;
+  background: cyan !important;
+}
+
+.debug-button {
+  border: 2px solid green !important;
+  background: lime !important;
+  color: black !important;
+  font-size: 20px !important;
+  padding: 10px !important;
+}
+
+/* Forcer l'affichage de TOUS les éléments */
+.cart-section * {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+.quantity-controls * {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+}
+
+<div className="quantity-controls debug-quantity-controls">
+  <button className="quantity-btn decrease debug-button">
+    −
+  </button>
+  <span className="quantity debug-button">{item.quantity}</span>
+  <button className="quantity-btn increase debug-button">
+    +
+  </button>
+  <button className="remove-btn debug-button">
+    ×
+  </button>
+</div>

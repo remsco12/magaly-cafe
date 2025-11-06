@@ -1,0 +1,478 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header responsive */
+.app-header {
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  color: white;
+  padding: 0.8rem 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.logo-fallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+  color: #FFD700;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-text h1 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.logo-subtitle {
+  font-size: 0.7rem;
+  opacity: 0.9;
+  margin-top: 0.1rem;
+  white-space: nowrap;
+}
+
+.welcome {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.logout-btn {
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* Navigation responsive */
+.app-nav {
+  background: white;
+  padding: 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.app-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #666;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: fit-content;
+}
+
+.nav-btn:hover {
+  background: #f8f9fa;
+  color: #8B4513;
+}
+
+.nav-btn.active {
+  color: #8B4513;
+  border-bottom-color: #8B4513;
+  background: #fff8f0;
+  font-weight: 600;
+}
+
+/* Main content responsive */
+.app-main {
+  flex: 1;
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablettes (768px - 1024px) */
+@media (max-width: 1024px) {
+  .header-content {
+    padding: 0 0.5rem;
+  }
+  
+  .logo-text h1 {
+    font-size: 1.2rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.65rem;
+  }
+  
+  .nav-btn {
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .app-main {
+    padding: 0.875rem;
+  }
+}
+
+/* Grands smartphones (576px - 768px) */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.6rem 0.75rem;
+  }
+  
+  .header-content {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .logo {
+    order: 1;
+  }
+  
+  .header-actions {
+    order: 2;
+    margin-left: auto;
+  }
+  
+  .logo-text h1 {
+    font-size: 1.1rem;
+  }
+  
+  .welcome {
+    font-size: 0.8rem;
+  }
+  
+  .logout-btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+  }
+  
+  .nav-btn {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.85rem;
+  }
+  
+  .nav-btn span {
+    display: none;
+  }
+  
+  .nav-btn {
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 60px;
+  }
+  
+  .app-main {
+    padding: 0.75rem;
+  }
+}
+
+/* Smartphones moyens (425px - 576px) */
+@media (max-width: 576px) {
+  .app-header {
+    padding: 0.5rem;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .logo {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .header-actions {
+    justify-content: center;
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .welcome {
+    margin-right: 0;
+    margin-bottom: 0.25rem;
+  }
+  
+  .logo-image {
+    height: 35px;
+  }
+  
+  .logo-fallback {
+    height: 35px;
+    width: 35px;
+  }
+  
+  .logo-text h1 {
+    font-size: 1rem;
+  }
+  
+  .nav-btn {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8rem;
+    min-width: 50px;
+  }
+  
+  .app-main {
+    padding: 0.5rem;
+  }
+}
+
+/* Petits smartphones (< 425px) */
+@media (max-width: 425px) {
+  .app-header {
+    padding: 0.4rem;
+  }
+  
+  .logo {
+    gap: 0.5rem;
+  }
+  
+  .logo-image {
+    height: 30px;
+  }
+  
+  .logo-fallback {
+    height: 30px;
+    width: 30px;
+  }
+  
+  .logo-icon {
+    font-size: 1.2rem;
+  }
+  
+  .logo-text h1 {
+    font-size: 0.9rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.6rem;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .welcome {
+    font-size: 0.75rem;
+  }
+  
+  .logout-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.7rem;
+  }
+  
+  .nav-btn {
+    padding: 0.5rem 0.625rem;
+    min-width: 45px;
+  }
+  
+  .nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .app-main {
+    padding: 0.4rem;
+  }
+}
+
+/* Mode paysage sur mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .app-header {
+    padding: 0.3rem 0.5rem;
+  }
+  
+  .logo-image {
+    height: 30px;
+  }
+  
+  .nav-btn {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .app-main {
+    padding: 0.5rem;
+  }
+}
+
+/* Très grands écrans (> 1440px) */
+@media (min-width: 1441px) {
+  .header-content {
+    max-width: 1600px;
+  }
+  
+  .app-main {
+    max-width: 1600px;
+  }
+}
+
+/* Support tactile amélioré */
+@media (hover: none) and (pointer: coarse) {
+  .nav-btn {
+    padding: 1rem 1.5rem;
+    min-height: 44px;
+  }
+  
+  .logout-btn {
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+  }
+  
+  .nav-btn:hover {
+    background: none;
+  }
+  
+  .nav-btn.active {
+    background: #fff8f0;
+  }
+}
+
+/* Mode sombre automatique */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1a1a1a;
+    color: #e5e5e5;
+  }
+  
+  .app-nav {
+    background: #2d2d2d;
+  }
+  
+  .nav-btn {
+    color: #ccc;
+  }
+  
+  .nav-btn:hover {
+    background: #3d3d3d;
+    color: #8B4513;
+  }
+  
+  .nav-btn.active {
+    color: #8B4513;
+    background: #3d2d1a;
+  }
+}
+
+/* Animation pour les transitions */
+.app-main > * {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Amélioration de la performance sur mobile */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .nav-btn, .logout-btn {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Support pour les navigateurs anciens */
+@supports not (backdrop-filter: blur(10px)) {
+  .app-header {
+    background: #8B4513;
+  }
+}
