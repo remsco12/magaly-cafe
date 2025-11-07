@@ -88,24 +88,37 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <div className="logo">
-            <img 
-              src="/logo.png" 
-              alt="Magaly Café" 
-              className="logo-image"
-              onError={(e) => {
-                // Fallback si le logo n'est pas trouvé
-                e.target.style.display = 'none'
-                e.target.nextSibling.style.display = 'flex'
-              }}
-            />
-            <div className="logo-fallback">
-              <span className="logo-icon">☕</span>
-            </div>
-            <div className="logo-text">
-              <h1>Magaly Café</h1>
-              <span className="logo-subtitle">Gestion Professionnelle</span>
-            </div>
-          </div>
+  <img 
+    src="/logo.png" 
+    alt="Magaly Café" 
+    className="logo-image"
+    onError={(e) => {
+      // Fallback si le logo ne charge pas
+      e.target.style.display = 'none'
+      // Afficher un fallback
+      const fallback = document.createElement('div')
+      fallback.className = 'logo-fallback'
+      fallback.innerHTML = '☕'
+      fallback.style.cssText = `
+        width: 50px;
+        height: 50px;
+        background: #8B4513;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 24px;
+        color: white;
+      `
+      e.target.parentNode.insertBefore(fallback, e.target)
+    }}
+  />
+  <div className="logo-text">
+    <h1>Magaly Café</h1>
+    <span className="logo-subtitle">Gestion Professionnelle</span>
+  </div>
+</div>
           <div className="header-actions">
             <span className="welcome">
               Bienvenue, {user.username} ({user.role})
