@@ -3,9 +3,8 @@ import { TrendingUp, Users, Coffee, AlertTriangle } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import { toast } from 'react-hot-toast'
 import '../styles/Dashboard.css'
-import Header from './Header'
 
-const Dashboard = ({ user, onLogout }) => {
+const Dashboard = ({ user }) => {  // Retirez onLogout des props
   const [stats, setStats] = useState({
     dailyRevenue: 0,
     totalSales: 0,
@@ -103,8 +102,7 @@ const Dashboard = ({ user, onLogout }) => {
 
   return (
     <div className="dashboard">
-      {/* Header avec logo */}
-      <Header user={user} onLogout={onLogout} />
+      {/* SUPPRIMEZ le Header ici - Utilisez celui de App.jsx */}
       
       {/* Contenu du Dashboard */}
       <div className="dashboard-content">
