@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Toaster, toast } from 'react-hot-toast'
-import { Coffee, Package, BarChart3, Bell, LogOut, DollarSign } from 'lucide-react'
+import { Coffee, Package, BarChart3, Bell, DollarSign, Users } from 'lucide-react'
 import Dashboard from './components/Dashboard'
 import SalesTerminal from './components/SalesTerminal'
 import StockManagement from './components/StockManagement'
@@ -8,10 +8,9 @@ import Notifications from './components/Notifications'
 import PriceManagement from './components/PriceManagement'
 import Statistics from './components/Statistics'
 import UserManagement from './components/UserManagement'
-import { Users } from 'lucide-react'
 import Login from './components/Login'
+import Header from './components/Header'
 import { useStockAlert } from './hooks/useStockAlert'
-import { useLogo } from './hooks/useLogo'
 import './App.css'
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [notifications, setNotifications] = useState([])
   const { checkStockAlerts } = useStockAlert()
-  const logo = useLogo()
 
   // Vérifier si un utilisateur est déjà connecté au chargement
   useEffect(() => {
@@ -86,52 +84,8 @@ function App() {
     <div className="app">
       <Toaster position="top-right" />
       
-      {/* Header avec logo */}
-      <header className="app-header">
-        <div className="header-content">
-          <div className="logo">
-  <img 
-    src="${window.location.origin}/logo.png" 
-    alt="Magaly Café" 
-    className="logo-image"
-    onError={(e) => {
-      // Fallback si le logo ne charge pas
-      e.target.style.display = 'none'
-      // Afficher un fallback
-      const fallback = document.createElement('div')
-      fallback.className = 'logo-fallback'
-      fallback.innerHTML = '☕'
-      fallback.style.cssText = `
-        width: 50px;
-        height: 50px;
-        background: #8B4513;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 15px;
-        font-size: 24px;
-        color: white;
-      `
-      e.target.parentNode.insertBefore(fallback, e.target)
-    }}
-  />
-  <div className="logo-text">
-    <h1>Magaly Café</h1>
-    <span className="logo-subtitle">Gestion Professionnelle</span>
-  </div>
-</div>
-          <div className="header-actions">
-            <span className="welcome">
-              Bienvenue, {user.username} ({user.role})
-            </span>
-            <button onClick={handleLogout} className="logout-btn">
-              <LogOut size={16} />
-              Déconnexion
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Header commun pour toute l'app - UNIQUEMENT CELUI-CI */}
+      <Header user={user} onLogout={handleLogout} />
 
       {/* Navigation */}
       <nav className="app-nav">
@@ -168,4 +122,3 @@ function App() {
 }
 
 export default App
-
