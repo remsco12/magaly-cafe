@@ -1,50 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { Toaster, toast } from 'react-hot-toast'
-import { Coffee, Package, BarChart3, Bell, LogOut, DollarSign } from 'lucide-react'
-import Dashboard from './components/Dashboard'
+import { Coffee, BarChart3, LogOut } from 'lucide-react'
 import SalesTerminal from './components/SalesTerminal'
-import StockManagement from './components/StockManagement'
-import Notifications from './components/Notifications'
-import PriceManagement from './components/PriceManagement'
-import Statistics from './components/Statistics'
-import UserManagement from './components/UserManagement'
-import { Users } from 'lucide-react'
 import Login from './components/Login'
-import { useStockAlert } from './hooks/useStockAlert'
 import './App.css'
 
 function App() {
   const [user, setUser] = useState(null)
-  const [activeTab, setActiveTab] = useState('dashboard')
-  const [notifications, setNotifications] = useState([])
-  const { checkStockAlerts } = useStockAlert()
+  const [activeTab, setActiveTab] = useState('sales')
 
   // Vérifier si un utilisateur est déjà connecté au chargement
   useEffect(() => {
     const savedUser = localStorage.getItem('cafeUser')
     if (savedUser) {
-      setUser(JSON.parse(savedUser))
-    }
-  }, [])
-
-  // Vérifier les alertes de stock
-  useEffect(() => {
-    if (user) {
-      const alerts = checkStockAlerts()
-      if (alerts.length > 0) {
-        alerts.forEach(alert => {
-          toast.error(alert.message, { duration: 6000 })
-          setNotifications(prev => [...prev, {
-            id: Date.now(),
-            type: 'warning',
-            message: alert.message,
-            timestamp: new Date(),
-            read: false
-          }])
-        })
+      try {
+        setUser(JSON.parse(savedUser))
+      } catch (e) {
+        console.error('Erreur parsing user:', e)
+        localStorage.removeItem('cafeUser')
       }
     }
-  }, [user])
+  }, [])
 
   const handleLogin = (userData) => {
     setUser(userData)
@@ -54,61 +30,34 @@ function App() {
 
   const handleLogout = () => {
     setUser(null)
-    setActiveTab('dashboard')
+    setActiveTab('sales')
     localStorage.removeItem('cafeUser')
     toast.success('Déconnexion réussie')
-  }
-
-  // Définir les onglets accessibles par rôle
-  const getTabs = () => {
-    const allTabs = [
-      { id: 'dashboard', name: 'Tableau de Bord', icon: BarChart3, roles: ['admin', 'gerant', 'serveur'] },
-      { id: 'sales', name: 'Ventes', icon: Coffee, roles: ['admin', 'gerant', 'serveur'] },
-      { id: 'stock', name: 'Stock', icon: Package, roles: ['admin', 'gerant'] },
-      { id: 'prices', name: 'Prix', icon: DollarSign, roles: ['admin'] },
-      { id: 'statistics', name: 'Statistiques', icon: BarChart3, roles: ['admin'] },
-      { id: 'users', name: 'Utilisateurs', icon: Users, roles: ['admin'] },
-      { id: 'notifications', name: 'Notifications', icon: Bell, roles: ['admin', 'gerant'] }
-    ]
-
-    return allTabs.filter(tab => tab.roles.includes(user?.role))
   }
 
   if (!user) {
     return <Login onLogin={handleLogin} />
   }
 
-  const tabs = getTabs()
-
   return (
     <div className="app">
       <Toaster position="top-right" />
       
-      {/* Header avec logo */}
+      {/* Header simplifié */}
       <header className="app-header">
         <div className="header-content">
           <div className="logo">
-            <img 
-              src="/logo.png" 
-              alt="Magaly Café" 
-              className="logo-image"
-              onError={(e) => {
-                // Fallback si le logo n'est pas trouvé
-                e.target.style.display = 'none'
-                e.target.nextSibling.style.display = 'flex'
-              }}
-            />
             <div className="logo-fallback">
               <span className="logo-icon">☕</span>
             </div>
             <div className="logo-text">
               <h1>Magaly Café</h1>
-              <span className="logo-subtitle">Gestion Professionnelle</span>
+              <span className="logo-subtitle">Terminal de Vente</span>
             </div>
           </div>
           <div className="header-actions">
             <span className="welcome">
-              Bienvenue, {user.username} ({user.role})
+              Bienvenue, {user.username}
             </span>
             <button onClick={handleLogout} className="logout-btn">
               <LogOut size={16} />
@@ -118,39 +67,23 @@ function App() {
         </div>
       </header>
 
-      {/* Navigation */}
+      {/* Navigation simplifiée */}
       <nav className="app-nav">
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            className={`nav-btn ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            <tab.icon size={20} />
-            <span>{tab.name}</span>
-          </button>
-        ))}
+        <button
+          className={`nav-btn ${activeTab === 'sales' ? 'active' : ''}`}
+          onClick={() => setActiveTab('sales')}
+        >
+          <Coffee size={20} />
+          <span>Terminal de Vente</span>
+        </button>
       </nav>
 
       {/* Main Content */}
       <main className="app-main">
-        {activeTab === 'dashboard' && <Dashboard user={user} />}
         {activeTab === 'sales' && <SalesTerminal user={user} />}
-        {activeTab === 'stock' && <StockManagement user={user} />}
-        {activeTab === 'prices' && <PriceManagement user={user} />}
-        {activeTab === 'statistics' && <Statistics user={user} />}
-        {activeTab === 'users' && <UserManagement user={user} />}
-        {activeTab === 'notifications' && (
-          <Notifications 
-            notifications={notifications} 
-            setNotifications={setNotifications} 
-            user={user}
-          />
-        )}
       </main>
     </div>
   )
 }
 
 export default App
-
