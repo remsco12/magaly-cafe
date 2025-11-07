@@ -3,8 +3,9 @@ import { TrendingUp, Users, Coffee, AlertTriangle } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import { toast } from 'react-hot-toast'
 import '../styles/Dashboard.css'
+import Header from './Header'
 
-const Dashboard = ({ user }) => {
+const Dashboard = ({ user, onLogout }) => {
   const [stats, setStats] = useState({
     dailyRevenue: 0,
     totalSales: 0,
@@ -102,105 +103,111 @@ const Dashboard = ({ user }) => {
 
   return (
     <div className="dashboard">
-      <div className="dashboard-header">
-        <h2>Tableau de Bord</h2>
-        <p>Bienvenue {user?.name}, voici l'aperçu des performances</p>
+      {/* Header avec logo */}
+      <Header user={user} onLogout={onLogout} />
+      
+      {/* Contenu du Dashboard */}
+      <div className="dashboard-content">
+        <div className="dashboard-header">
+          <h2>Tableau de Bord</h2>
+          <p>Bienvenue {user?.username}, voici l'aperçu des performances</p>
+        </div>
+
+        {/* Cartes de statistiques */}
+        <div className="stats-grid">
+          <StatCard
+            icon={TrendingUp}
+            title="Revenue Aujourd'hui"
+            value={`${stats.dailyRevenue.toFixed(0)} FCFA`}
+            subtitle="+12% vs hier"
+            color="#10B981"
+          />
+          <StatCard
+            icon={Users}
+            title="Total Ventes"
+            value={stats.totalSales}
+            subtitle="Ce mois"
+            color="#3B82F6"
+          />
+          <StatCard
+            icon={Coffee}
+            title="Produit Populaire"
+            value={stats.popularProduct}
+            subtitle="Le plus vendu"
+            color="#8B5CF6"
+          />
+          <StatCard
+            icon={AlertTriangle}
+            title="Alertes Stock"
+            value={stats.lowStockItems}
+            subtitle="Attention nécessaire"
+            color="#EF4444"
+          />
+        </div>
+
+        {/* Graphiques */}
+        <div className="charts-grid">
+          <div className="chart-card">
+            <h3>Revenue Hebdomadaire</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={salesData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip 
+                  formatter={(value) => [`${value} FCFA`, 'Revenue']}
+                />
+                <Legend />
+                <Line 
+                  type="monotone" 
+                  dataKey="revenue" 
+                  stroke="#8B4513" 
+                  strokeWidth={2} 
+                  name="Revenue (FCFA)"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="chart-card">
+            <h3>Ventes par Produit</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={productData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {productData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Alertes rapides */}
+        {stats.lowStockItems > 0 && (
+          <div className="alert-banner">
+            <AlertTriangle size={20} />
+            <span>{stats.lowStockItems} article(s) nécessitent une réapprovisionnement</span>
+          </div>
+        )}
+
+        {stats.totalSales === 0 && (
+          <div className="welcome-message">
+            <h3>Bienvenue dans Magaly Café !</h3>
+            <p>Commencez par ajouter des produits en stock et effectuez votre première vente.</p>
+          </div>
+        )}
       </div>
-
-      {/* Cartes de statistiques */}
-      <div className="stats-grid">
-        <StatCard
-          icon={TrendingUp}
-          title="Revenue Aujourd'hui"
-          value={`${stats.dailyRevenue.toFixed(0)} FCFA`}
-          subtitle="+12% vs hier"
-          color="#10B981"
-        />
-        <StatCard
-          icon={Users}
-          title="Total Ventes"
-          value={stats.totalSales}
-          subtitle="Ce mois"
-          color="#3B82F6"
-        />
-        <StatCard
-          icon={Coffee}
-          title="Produit Populaire"
-          value={stats.popularProduct}
-          subtitle="Le plus vendu"
-          color="#8B5CF6"
-        />
-        <StatCard
-          icon={AlertTriangle}
-          title="Alertes Stock"
-          value={stats.lowStockItems}
-          subtitle="Attention nécessaire"
-          color="#EF4444"
-        />
-      </div>
-
-      {/* Graphiques */}
-      <div className="charts-grid">
-        <div className="chart-card">
-          <h3>Revenue Hebdomadaire</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={salesData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip 
-                formatter={(value) => [`${value} FCFA`, 'Revenue']}
-              />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="revenue" 
-                stroke="#8B4513" 
-                strokeWidth={2} 
-                name="Revenue (FCFA)"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="chart-card">
-          <h3>Ventes par Produit</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={productData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {productData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* Alertes rapides */}
-      {stats.lowStockItems > 0 && (
-        <div className="alert-banner">
-          <AlertTriangle size={20} />
-          <span>{stats.lowStockItems} article(s) nécessitent une réapprovisionnement</span>
-        </div>
-      )}
-
-      {stats.totalSales === 0 && (
-        <div className="welcome-message">
-          <h3>Bienvenue dans Magaly Café !</h3>
-          <p>Commencez par ajouter des produits en stock et effectuez votre première vente.</p>
-        </div>
-      )}
     </div>
   )
 }
