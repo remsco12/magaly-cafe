@@ -11,6 +11,7 @@ import UserManagement from './components/UserManagement'
 import { Users } from 'lucide-react'
 import Login from './components/Login'
 import { useStockAlert } from './hooks/useStockAlert'
+import { useLogo } from './hooks/useLogo'
 import './App.css'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [notifications, setNotifications] = useState([])
   const { checkStockAlerts } = useStockAlert()
+  const logo = useLogo()
 
   // Vérifier si un utilisateur est déjà connecté au chargement
   useEffect(() => {
@@ -89,7 +91,7 @@ function App() {
         <div className="header-content">
           <div className="logo">
   <img 
-    src="/logo.png" 
+    src="${window.location.origin}/logo.png" 
     alt="Magaly Café" 
     className="logo-image"
     onError={(e) => {
