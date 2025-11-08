@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Toaster, toast } from 'react-hot-toast'
-import { CCoffee, Package, BarChart3, Bell, DollarSign, Users, Crown } from 'lucide-react'
+import { 
+  Coffee, 
+  Package, 
+  BarChart3, 
+  Bell, 
+  DollarSign, 
+  Users, 
+  Crown 
+} from 'lucide-react'
 import Dashboard from './components/Dashboard'
 import SalesTerminal from './components/SalesTerminal'
 import StockManagement from './components/StockManagement'
@@ -105,82 +113,66 @@ function App() {
   }
 
   // Définir les onglets accessibles par rôle
-const getTabs = () => {
-  const allTabs = [
-    { 
-      id: 'dashboard', 
-      name: 'Tableau de Bord', 
-      icon: BarChart3, 
-      roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
-    },
-    { 
-      id: 'sales', 
-      name: 'Ventes', 
-      icon: Coffee, 
-      roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
-    },
-    { 
-      id: 'stock', 
-      name: 'Stock', 
-      icon: Package, 
-      roles: ['hyperadmin', 'admin', 'gerant']  // gerant peut gérer le stock
-    },
-    { 
-      id: 'prices', 
-      name: 'Prix', 
-      icon: DollarSign, 
-      roles: ['hyperadmin', 'admin']  // Seulement hyperadmin et admin
-    },
-    { 
-      id: 'statistics', 
-      name: 'Statistiques', 
-      icon: BarChart3, 
-      roles: ['hyperadmin', 'admin']  // Seulement hyperadmin et admin
-    },
-    { 
-      id: 'users', 
-      name: 'Utilisateurs', 
-      icon: Users, 
-      roles: ['hyperadmin']  // SEUL l'hyper-admin peut gérer les utilisateurs
-    },
-    { 
-      id: 'notifications', 
-      name: 'Notifications', 
-      icon: Bell, 
-      roles: ['hyperadmin', 'admin', 'gerant']  // gerant peut voir les notifications
-    }
-  ]
+  const getTabs = () => {
+    const allTabs = [
+      { 
+        id: 'dashboard', 
+        name: 'Tableau de Bord', 
+        icon: BarChart3, 
+        roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
+      },
+      { 
+        id: 'sales', 
+        name: 'Ventes', 
+        icon: Coffee, 
+        roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
+      },
+      { 
+        id: 'stock', 
+        name: 'Stock', 
+        icon: Package, 
+        roles: ['hyperadmin', 'admin', 'gerant'] 
+      },
+      { 
+        id: 'prices', 
+        name: 'Prix', 
+        icon: DollarSign, 
+        roles: ['hyperadmin', 'admin'] 
+      },
+      { 
+        id: 'statistics', 
+        name: 'Statistiques', 
+        icon: BarChart3, 
+        roles: ['hyperadmin', 'admin'] 
+      },
+      { 
+        id: 'users', 
+        name: 'Utilisateurs', 
+        icon: Users, 
+        roles: ['hyperadmin'] 
+      },
+      { 
+        id: 'notifications', 
+        name: 'Notifications', 
+        icon: Bell, 
+        roles: ['hyperadmin', 'admin', 'gerant'] 
+      }
+    ]
 
-  return allTabs.filter(tab => tab.roles.includes(user?.role))
-}
+    return allTabs.filter(tab => tab.roles.includes(user?.role))
+  }
 
   // Obtenir le badge de rôle stylisé
-const getRoleBadge = (role) => {
-  const badges = {
-    'hyperadmin': { 
-      label: 'Hyper Admin', 
-      color: '#ff6b35', 
-      icon: Crown 
-    },
-    'admin': { 
-      label: 'Administrateur', 
-      color: '#8B4513', 
-      icon: Users 
-    },
-    'gerant': { 
-      label: 'Gérant', 
-      color: '#2E8B57', 
-      icon: Users 
-    },
-    'serveur': { 
-      label: 'Serveur', 
-      color: '#4682B4', 
-      icon: Users 
+  const getRoleBadge = (role) => {
+    const badges = {
+      'hyperadmin': { label: 'Hyper Admin', color: '#ff6b35', icon: Crown },
+      'admin': { label: 'Administrateur', color: '#8B4513', icon: Users },
+      'gerant': { label: 'Gérant', color: '#2E8B57', icon: Users },
+      'serveur': { label: 'Serveur', color: '#4682B4', icon: Users }
     }
+    
+    return badges[role] || { label: role, color: '#666', icon: Users }
   }
-  
-  return badges[role] || { label: role, color: '#666', icon: Users }
-}
 
   if (!user) {
     return <Login onLogin={handleLogin} />
@@ -215,34 +207,34 @@ const getRoleBadge = (role) => {
       {/* Header commun pour toute l'app */}
       <Header user={user} onLogout={handleLogout} roleBadge={roleBadge} />
 
-      
-<nav className="app-nav">
-  <div className="nav-content">
-    <div className="user-role-indicator">
-      <span 
-        className="role-badge"
-        style={{ backgroundColor: roleBadge.color }}
-      >
-        {roleBadge.icon && <roleBadge.icon size={14} />}
-        {roleBadge.label}
-      </span>
-    </div>
-    
-    <div className="nav-buttons">
-      {tabs.map(tab => (
-        <button
-          key={tab.id}
-          className={`nav-btn ${activeTab === tab.id ? 'active' : ''}`}
-          onClick={() => setActiveTab(tab.id)}
-          title={tab.name}
-        >
-          <tab.icon size={18} />
-          <span className="nav-btn-text">{tab.name}</span>
-        </button>
-      ))}
-    </div>
-  </div>
-</nav>
+      {/* Navigation avec indicateur de rôle */}
+      <nav className="app-nav">
+        <div className="nav-content">
+          <div className="user-role-indicator">
+            <span 
+              className="role-badge"
+              style={{ backgroundColor: roleBadge.color }}
+            >
+              {roleBadge.icon && <roleBadge.icon size={14} />}
+              {roleBadge.label}
+            </span>
+          </div>
+          
+          <div className="nav-buttons">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                className={`nav-btn ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+                title={tab.name}
+              >
+                <tab.icon size={18} />
+                <span className="nav-btn-text">{tab.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
 
       {/* Main Content */}
       <main className="app-main">
