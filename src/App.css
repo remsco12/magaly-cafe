@@ -1,138 +1,151 @@
+/* Reset et base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f8f9fa;
-  color: #333;
-  line-height: 1.6;
-}
-
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f9fa;
 }
 
-/* Header responsive */
+/* Header */
 .app-header {
   background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
   color: white;
-  padding: 0.8rem 1rem;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
-  gap: 1rem;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
+  gap: 1rem;
 }
 
 .logo-image {
-  height: 40px;
-  width: auto;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 
 .logo-fallback {
-  display: none;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
-  width: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-}
-
-.logo-icon {
-  font-size: 1.5rem;
-  color: #FFD700;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
+  font-size: 24px;
+  color: white;
 }
 
 .logo-text h1 {
-  font-size: 1.3rem;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 700;
   margin: 0;
-  line-height: 1.2;
-  white-space: nowrap;
+  color: white;
 }
 
 .logo-subtitle {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   opacity: 0.9;
-  margin-top: 0.1rem;
-  white-space: nowrap;
-}
-
-.welcome {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  margin-right: 0.5rem;
-  white-space: nowrap;
+  color: white;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.welcome {
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .logout-btn {
-  padding: 0.4rem 0.8rem;
-  background: transparent;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 6px;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  transition: all 0.2s ease;
-  font-size: 0.8rem;
-  white-space: nowrap;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
 }
 
 .logout-btn:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* Navigation responsive */
+/* Navigation */
 .app-nav {
   background: white;
-  padding: 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-bottom: 1px solid #e9ecef;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 82px;
+  z-index: 90;
+}
+
+.nav-content {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.user-role-indicator {
+  padding: 1rem 0;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #8B4513;
+  color: white;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 0.5rem;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 1rem 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-.app-nav::-webkit-scrollbar {
+.nav-buttons::-webkit-scrollbar {
   display: none;
 }
 
@@ -140,310 +153,43 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem 1.25rem;
-  background: none;
-  border: none;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #666;
-  border-bottom: 3px solid transparent;
   white-space: nowrap;
-  flex-shrink: 0;
+  font-size: 0.9rem;
+  color: #666;
   min-width: fit-content;
 }
 
 .nav-btn:hover {
   background: #f8f9fa;
+  border-color: #8B4513;
   color: #8B4513;
+  transform: translateY(-1px);
 }
 
 .nav-btn.active {
-  color: #8B4513;
-  border-bottom-color: #8B4513;
-  background: #fff8f0;
-  font-weight: 600;
+  background: #8B4513;
+  color: white;
+  border-color: #8B4513;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
 }
 
-/* Main content responsive */
+.nav-btn-text {
+  font-weight: 500;
+}
+
+/* Main Content */
 .app-main {
   flex: 1;
-  padding: 1rem;
+  padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
-}
-
-/* ===== RESPONSIVE BREAKPOINTS ===== */
-
-/* Tablettes (768px - 1024px) */
-@media (max-width: 1024px) {
-  .header-content {
-    padding: 0 0.5rem;
-  }
-  
-  .logo-text h1 {
-    font-size: 1.2rem;
-  }
-  
-  .logo-subtitle {
-    font-size: 0.65rem;
-  }
-  
-  .nav-btn {
-    padding: 0.875rem 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .app-main {
-    padding: 0.875rem;
-  }
-}
-
-/* Grands smartphones (576px - 768px) */
-@media (max-width: 768px) {
-  .app-header {
-    padding: 0.6rem 0.75rem;
-  }
-  
-  .header-content {
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  
-  .logo {
-    order: 1;
-  }
-  
-  .header-actions {
-    order: 2;
-    margin-left: auto;
-  }
-  
-  .logo-text h1 {
-    font-size: 1.1rem;
-  }
-  
-  .welcome {
-    font-size: 0.8rem;
-  }
-  
-  .logout-btn {
-    padding: 0.35rem 0.7rem;
-    font-size: 0.75rem;
-  }
-  
-  .nav-btn {
-    padding: 0.75rem 0.875rem;
-    font-size: 0.85rem;
-  }
-  
-  .nav-btn span {
-    display: none;
-  }
-  
-  .nav-btn {
-    flex-direction: column;
-    gap: 0.25rem;
-    min-width: 60px;
-  }
-  
-  .app-main {
-    padding: 0.75rem;
-  }
-}
-
-/* Smartphones moyens (425px - 576px) */
-@media (max-width: 576px) {
-  .app-header {
-    padding: 0.5rem;
-  }
-  
-  .header-content {
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
-  }
-  
-  .logo {
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .header-actions {
-    justify-content: center;
-    width: 100%;
-    margin-left: 0;
-  }
-  
-  .welcome {
-    margin-right: 0;
-    margin-bottom: 0.25rem;
-  }
-  
-  .logo-image {
-    height: 35px;
-  }
-  
-  .logo-fallback {
-    height: 35px;
-    width: 35px;
-  }
-  
-  .logo-text h1 {
-    font-size: 1rem;
-  }
-  
-  .nav-btn {
-    padding: 0.625rem 0.75rem;
-    font-size: 0.8rem;
-    min-width: 50px;
-  }
-  
-  .app-main {
-    padding: 0.5rem;
-  }
-}
-
-/* Petits smartphones (< 425px) */
-@media (max-width: 425px) {
-  .app-header {
-    padding: 0.4rem;
-  }
-  
-  .logo {
-    gap: 0.5rem;
-  }
-  
-  .logo-image {
-    height: 30px;
-  }
-  
-  .logo-fallback {
-    height: 30px;
-    width: 30px;
-  }
-  
-  .logo-icon {
-    font-size: 1.2rem;
-  }
-  
-  .logo-text h1 {
-    font-size: 0.9rem;
-  }
-  
-  .logo-subtitle {
-    font-size: 0.6rem;
-  }
-  
-  .header-actions {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .welcome {
-    font-size: 0.75rem;
-  }
-  
-  .logout-btn {
-    width: 100%;
-    justify-content: center;
-    font-size: 0.7rem;
-  }
-  
-  .nav-btn {
-    padding: 0.5rem 0.625rem;
-    min-width: 45px;
-  }
-  
-  .nav-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .app-main {
-    padding: 0.4rem;
-  }
-}
-
-/* Mode paysage sur mobile */
-@media (max-height: 500px) and (orientation: landscape) {
-  .app-header {
-    padding: 0.3rem 0.5rem;
-  }
-  
-  .logo-image {
-    height: 30px;
-  }
-  
-  .nav-btn {
-    padding: 0.5rem 0.75rem;
-  }
-  
-  .app-main {
-    padding: 0.5rem;
-  }
-}
-
-/* Très grands écrans (> 1440px) */
-@media (min-width: 1441px) {
-  .header-content {
-    max-width: 1600px;
-  }
-  
-  .app-main {
-    max-width: 1600px;
-  }
-}
-
-/* Support tactile amélioré */
-@media (hover: none) and (pointer: coarse) {
-  .nav-btn {
-    padding: 1rem 1.5rem;
-    min-height: 44px;
-  }
-  
-  .logout-btn {
-    padding: 0.75rem 1rem;
-    min-height: 44px;
-  }
-  
-  .nav-btn:hover {
-    background: none;
-  }
-  
-  .nav-btn.active {
-    background: #fff8f0;
-  }
-}
-
-/* Mode sombre automatique */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #1a1a1a;
-    color: #e5e5e5;
-  }
-  
-  .app-nav {
-    background: #2d2d2d;
-  }
-  
-  .nav-btn {
-    color: #ccc;
-  }
-  
-  .nav-btn:hover {
-    background: #3d3d3d;
-    color: #8B4513;
-  }
-  
-  .nav-btn.active {
-    color: #8B4513;
-    background: #3d2d1a;
-  }
-}
-
-/* Animation pour les transitions */
-.app-main > * {
   animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -458,133 +204,11 @@ body {
   }
 }
 
-/* Amélioration de la performance sur mobile */
-@media (max-width: 768px) {
-  * {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  .nav-btn, .logout-btn {
-    -webkit-user-select: none;
-    user-select: none;
-  }
-}
-
-/* Support pour les navigateurs anciens */
-@supports not (backdrop-filter: blur(10px)) {
-  .app-header {
-    background: #8B4513;
-  }
-}
-
-.app-header {
-  background: white;
-  border-bottom: 2px solid #f1f3f4;
-  padding: 0 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 15px 0;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo-text h1 {
-  margin: 0;
-  color: #8B4513;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.logo-subtitle {
-  font-size: 14px;
-  color: #666;
-  font-style: italic;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.welcome {
-  color: #333;
-  font-weight: 500;
-}
-
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 15px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s;
-}
-
-.logout-btn:hover {
-  background: #c82333;
-}
-
-/* Styles pour la navigation améliorée */
-.nav-header {
-  padding: 15px 20px;
-  border-bottom: 1px solid #e9ecef;
-  background: #f8f9fa;
-}
-
-.user-role-indicator {
-  display: flex;
-  justify-content: center;
-}
-
-.role-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-
-.nav-buttons {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0;
-}
-
-.nav-btn-text {
-  transition: transform 0.2s ease;
-}
-
-.nav-btn:hover .nav-btn-text {
-  transform: translateX(3px);
-}
-
-/* Footer de l'application */
+/* Footer */
 .app-footer {
-  background: #f8f9fa;
+  background: white;
   border-top: 1px solid #e9ecef;
-  padding: 15px 20px;
+  padding: 1.5rem 2rem;
   margin-top: auto;
 }
 
@@ -592,23 +216,24 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  font-size: 12px;
+  font-size: 0.9rem;
   color: #666;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.75rem;
 }
 
 .role-tag {
-  padding: 2px 8px;
-  border-radius: 12px;
+  padding: 0.25rem 0.75rem;
+  background: #8B4513;
   color: white;
-  font-size: 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -618,98 +243,232 @@ body {
   color: #8B4513;
 }
 
-/* Améliorations pour le header */
-.app-header {
-  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
-}
-
-/* Animation pour les changements d'onglets */
-.app-main {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .nav-header {
-    padding: 12px 15px;
-  }
-  
-  .role-badge {
-    font-size: 11px;
-    padding: 5px 10px;
-  }
-  
+/* Responsive Design - Tablette */
+@media (max-width: 1024px) {
+  .header-content,
+  .nav-content,
+  .app-main,
   .footer-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .app-main {
+    padding: 1.5rem;
+  }
+
+  .logo-text h1 {
+    font-size: 1.3rem;
+  }
+
+  .nav-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 768px) {
+  .header-content {
     flex-direction: column;
-    gap: 8px;
+    gap: 1rem;
+    padding: 1rem;
     text-align: center;
   }
-  
-  .nav-btn {
-    padding: 12px 15px;
-    font-size: 14px;
-  }
-  
-  .nav-btn-text {
-    font-size: 13px;
-  }
-}
 
-@media (max-width: 480px) {
-  .nav-header {
-    padding: 10px 12px;
+  .logo {
+    justify-content: center;
   }
-  
-  .role-badge {
-    font-size: 10px;
-    padding: 4px 8px;
+
+  .header-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
   }
-  
+
+  .welcome {
+    text-align: center;
+  }
+
+  .logout-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-content {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .user-role-indicator {
+    padding: 0.5rem 0;
+  }
+
+  .nav-buttons {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
   .nav-btn {
-    padding: 10px 12px;
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+    padding: 0.75rem 1rem;
   }
-  
+
   .nav-btn-text {
-    font-size: 12px;
+    font-size: 0.8rem;
   }
-  
-  .app-footer {
-    padding: 12px 15px;
+
+  .app-main {
+    padding: 1rem;
   }
-  
+
   .footer-content {
-    font-size: 11px;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .user-info {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
 
-/* Styles pour le dark mode */
+/* Responsive Design - Petit Mobile */
+@media (max-width: 480px) {
+  .logo {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .logo-text h1 {
+    font-size: 1.2rem;
+  }
+
+  .logo-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .nav-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    min-width: 100px;
+  }
+
+  .nav-btn-text {
+    font-size: 0.75rem;
+  }
+
+  .role-badge {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .app-main {
+    padding: 0.75rem;
+  }
+
+  .footer-content {
+    font-size: 0.8rem;
+  }
+
+  .role-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
+
+/* Mode paysage mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .app-header {
+    position: relative;
+  }
+
+  .app-nav {
+    position: relative;
+    top: 0;
+  }
+
+  .header-content {
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-content {
+    padding: 0.5rem 1rem;
+  }
+
+  .app-main {
+    padding: 1rem;
+  }
+}
+
+/* Support pour le dark mode */
 @media (prefers-color-scheme: dark) {
-  .nav-header {
-    background: #2d3748;
-    border-bottom-color: #4a5568;
+  .app {
+    background: #1a1a1a;
+    color: #e0e0e0;
   }
-  
+
+  .app-nav {
+    background: #2d2d2d;
+    border-bottom-color: #404040;
+  }
+
+  .nav-btn {
+    background: #2d2d2d;
+    border-color: #404040;
+    color: #b0b0b0;
+  }
+
+  .nav-btn:hover {
+    background: #404040;
+    color: #D2691E;
+  }
+
+  .nav-btn.active {
+    background: #D2691E;
+    color: white;
+  }
+
+  .app-main {
+    background: #1a1a1a;
+  }
+
   .app-footer {
-    background: #2d3748;
-    border-top-color: #4a5568;
-    color: #cbd5e0;
+    background: #2d2d2d;
+    border-top-color: #404040;
+    color: #b0b0b0;
   }
-  
+
+  .role-badge,
+  .role-tag {
+    background: #D2691E;
+  }
+
   .app-version {
     color: #D2691E;
+  }
+}
+
+/* Amélioration de l'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Support pour les très grands écrans */
+@media (min-width: 1920px) {
+  .header-content,
+  .nav-content,
+  .app-main,
+  .footer-content {
+    max-width: 1800px;
   }
 }
 
@@ -728,14 +487,4 @@ body {
   100% {
     box-shadow: 0 0 0 0 rgba(255, 107, 53, 0);
   }
-}
-
-/* Amélioration des toasts */
-.Toastify__toast {
-  border-radius: 10px !important;
-  font-weight: 500 !important;
-}
-
-.Toastify__toast-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }

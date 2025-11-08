@@ -199,34 +199,34 @@ const getTabs = () => {
       {/* Header commun pour toute l'app */}
       <Header user={user} onLogout={handleLogout} roleBadge={roleBadge} />
 
-      {/* Navigation avec indicateur de rôle */}
-      <nav className="app-nav">
-        <div className="nav-header">
-          <div className="user-role-indicator">
-            <span 
-              className="role-badge"
-              style={{ backgroundColor: roleBadge.color }}
-            >
-              {roleBadge.icon && <roleBadge.icon size={14} />}
-              {roleBadge.label}
-            </span>
-          </div>
-        </div>
-        
-        <div className="nav-buttons">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              className={`nav-btn ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-              title={tab.name}
-            >
-              <tab.icon size={20} />
-              <span className="nav-btn-text">{tab.name}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
+      // Dans la partie return de App.jsx, remplacez la navigation par :
+<nav className="app-nav">
+  <div className="nav-content">
+    <div className="user-role-indicator">
+      <span 
+        className="role-badge"
+        style={{ backgroundColor: roleBadge.color }}
+      >
+        {roleBadge.icon && <roleBadge.icon size={14} />}
+        {roleBadge.label}
+      </span>
+    </div>
+    
+    <div className="nav-buttons">
+      {tabs.map(tab => (
+        <button
+          key={tab.id}
+          className={`nav-btn ${activeTab === tab.id ? 'active' : ''}`}
+          onClick={() => setActiveTab(tab.id)}
+          title={tab.name}
+        >
+          <tab.icon size={18} />
+          <span className="nav-btn-text">{tab.name}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+</nav>
 
       {/* Main Content */}
       <main className="app-main">
