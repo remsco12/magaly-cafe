@@ -68,6 +68,7 @@ function App() {
       { id: 'prices', name: 'Prix', icon: DollarSign, roles: ['admin'] },
       { id: 'statistics', name: 'Statistiques', icon: BarChart3, roles: ['admin'] },
       { id: 'users', name: 'Utilisateurs', icon: Users, roles: ['admin'] },
+      { id: 'users', name: 'Utilisateurs', icon: Users, roles: ['hyperadmin'] },
       { id: 'notifications', name: 'Notifications', icon: Bell, roles: ['admin', 'gerant'] }
     ]
 

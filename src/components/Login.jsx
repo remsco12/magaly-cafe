@@ -24,6 +24,7 @@ const Login = ({ onLogin }) => {
 
       // Charger les utilisateurs depuis le localStorage
       const savedUsers = JSON.parse(localStorage.getItem('cafeUsers')) || {
+        'hyperadmin': { password: 'hyperadmin123', role: 'hyperadmin', name: 'Hyper Administrateur' },
         'admin': { password: 'admin123', role: 'admin', name: 'Administrateur' },
         'gerant': { password: 'gerant123', role: 'gerant', name: 'Gérant' },
         'serveur': { password: 'serveur123', role: 'serveur', name: 'Serveur' }

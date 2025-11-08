@@ -30,7 +30,7 @@ const StockManagement = ({ user }) => {
 
   // FONCTION DE RÉINITIALISATION POUR ADMINISTRATEURS
   const resetApplication = () => {
-    if (user.role !== 'admin') {
+    if (user.role !== 'hyperadmin') {
       toast.error('❌ Action non autorisée. Administrateur requis.')
       return
     }
@@ -220,56 +220,91 @@ const StockManagement = ({ user }) => {
         <p>Surveillez et gérez votre inventaire</p>
       </div>
 
-      {/* SECTION ADMINISTRATEUR - BOUTON DE RÉINITIALISATION */}
-      {user && user.role === 'admin' && (
-        <div className="admin-section">
-          <h3 style={{ 
-            color: '#dc3545', 
-            borderBottom: '2px solid #dc3545', 
-            paddingBottom: '10px',
-            marginTop: '20px',
-            marginBottom: '20px'
-          }}>
-            <RefreshCw size={20} style={{ marginRight: '10px' }} />
-            Zone Administrateur
-          </h3>
-          
-          <div className="admin-actions">
-            <button 
-              onClick={resetApplication}
-              className="reset-btn"
-              style={{
-                background: 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginTop: '10px',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <RefreshCw size={18} />
-              Réinitialiser l'Application
-            </button>
-            
-            <p style={{ 
-              fontSize: '12px', 
-              color: '#666', 
-              marginTop: '8px',
-              fontStyle: 'italic',
-              maxWidth: '500px'
-            }}>
-              ⚠️ Attention: Cette action supprime toutes les données (ventes, stock, utilisateurs) et remet l'application à zéro. Réservé aux administrateurs.
-            </p>
-          </div>
-        </div>
-      )}
+      {/* SECTION HYPER ADMINISTRATEUR */}
+{user && user.role === 'hyperadmin' && (
+  <div className="hyperadmin-section">
+    <h3 style={{ 
+      color: '#ff6b35', 
+      borderBottom: '2px solid #ff6b35', 
+      paddingBottom: '10px',
+      marginTop: '30px',
+      marginBottom: '20px'
+    }}>
+      🚨 Zone Hyper-Administrateur
+    </h3>
+    
+    <div className="hyperadmin-actions">
+      <button 
+        onClick={resetApplication}
+        className="hyperadmin-btn"
+        style={{
+          background: 'linear-gradient(135deg, #ff6b35 0%, #e55627 100%)',
+          color: 'white',
+          border: 'none',
+          padding: '15px 30px',
+          borderRadius: '10px',
+          cursor: 'pointer',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          marginTop: '15px',
+          transition: 'all 0.3s ease',
+          boxShadow: '0 4px 15px rgba(255, 107, 53, 0.3)'
+        }}
+        onMouseOver={(e) => {
+          e.target.style.transform = 'translateY(-2px)'
+          e.target.style.boxShadow = '0 6px 20px rgba(255, 107, 53, 0.4)'
+        }}
+        onMouseOut={(e) => {
+          e.target.style.transform = 'translateY(0)'
+          e.target.style.boxShadow = '0 4px 15px rgba(255, 107, 53, 0.3)'
+        }}
+      >
+        🚨 Réinitialiser Application Complète
+      </button>
+      
+      <p style={{ 
+        fontSize: '13px', 
+        color: '#ff6b35', 
+        marginTop: '12px',
+        fontStyle: 'italic',
+        maxWidth: '600px',
+        fontWeight: 'bold'
+      }}>
+        ⚠️ ACTION ULTIME : Seul l'Hyper-Administrateur peut effectuer cette action. 
+        Cela supprime TOUTES les données et remet l'application à son état initial.
+      </p>
+    </div>
+  </div>
+)}
+
+{/* SECTION ADMINISTRATEUR NORMAL (sans réinitialisation) */}
+{user && user.role === 'admin' && (
+  <div className="admin-section">
+    <h3 style={{ 
+      color: '#8B4513', 
+      borderBottom: '2px solid #8B4513', 
+      paddingBottom: '10px',
+      marginTop: '30px',
+      marginBottom: '20px'
+    }}>
+      ⚙️ Zone Administrateur
+    </h3>
+    
+    <div className="admin-actions">
+      <p style={{ 
+        fontSize: '14px', 
+        color: '#666', 
+        fontStyle: 'italic'
+      }}>
+        Vous êtes connecté en tant qu'Administrateur. 
+        Seul l'Hyper-Administrateur peut réinitialiser l'application complète.
+      </p>
+    </div>
+  </div>
+)}
 
       {/* Formulaire d'ajout */}
       <div className="add-ingredient-form">

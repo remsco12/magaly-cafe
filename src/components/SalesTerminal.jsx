@@ -189,70 +189,126 @@ const SalesTerminal = ({ user }) => {
   }
 
   const generateReceipt = (sale) => {
-    const receiptWindow = window.open('', '_blank')
-    receiptWindow.document.write(`
-      <html>
-        <head>
-          <title>Reçu Magaly Café</title>
-          <style>
-            body { 
-              font-family: 'Courier New', monospace; 
-              padding: 20px; 
-              max-width: 300px; 
-              margin: 0 auto;
-              background: white;
-            }
-            .header { 
-              text-align: center; 
-              margin-bottom: 20px;
-              border-bottom: 2px dashed #000;
-              padding-bottom: 10px;
-            }
-            .header h2 {
-              margin: 0;
-              color: #8B4513;
-            }
-            .item { 
-              display: flex; 
-              justify-content: space-between; 
-              margin: 8px 0;
-              padding: 4px 0;
-            }
-            .item-name {
-              flex: 2;
-            }
-            .item-quantity {
-              flex: 1;
-              text-align: center;
-            }
-            .item-price {
-              flex: 1;
-              text-align: right;
-            }
-            .total { 
-              border-top: 2px dashed #000; 
-              margin-top: 15px; 
-              padding-top: 10px; 
-              font-weight: bold;
-              font-size: 1.1em;
-            }
-            .footer { 
-              text-align: center; 
-              margin-top: 20px; 
-              font-size: 0.9em;
-              color: #666;
-            }
-            .thank-you {
-              font-style: italic;
-              margin-top: 10px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h2>MAGALY CAFÉ</h2>
-            <p>${new Date(sale.date).toLocaleString('fr-FR')}</p>
-          </div>
+  const receiptWindow = window.open('', '_blank')
+  
+  // Créer le logo en base64 ou utiliser l'URL
+  const logoHTML = `
+    <div style="text-align: center; margin-bottom: 10px;">
+      <div style="
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 auto 10px auto;
+      ">☕</div>
+    </div>
+  `
+
+  receiptWindow.document.write(`
+    <html>
+      <head>
+        <title>Reçu Magaly Café</title>
+        <style>
+          body { 
+            font-family: 'Courier New', monospace; 
+            padding: 15px; 
+            max-width: 300px; 
+            margin: 0 auto;
+            background: white;
+            font-size: 12px;
+          }
+          .header { 
+            text-align: center; 
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #000;
+            padding-bottom: 10px;
+          }
+          .header h2 {
+            margin: 5px 0;
+            color: #8B4513;
+            font-size: 18px;
+          }
+          .logo-container {
+            text-align: center;
+            margin-bottom: 10px;
+          }
+          .logo {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 auto;
+          }
+          .item { 
+            display: flex; 
+            justify-content: space-between; 
+            margin: 6px 0;
+            padding: 3px 0;
+            border-bottom: 1px dotted #ddd;
+          }
+          .item-name {
+            flex: 2;
+            font-weight: bold;
+          }
+          .item-quantity {
+            flex: 1;
+            text-align: center;
+          }
+          .item-price {
+            flex: 1;
+            text-align: right;
+          }
+          .total { 
+            border-top: 2px dashed #000; 
+            margin-top: 15px; 
+            padding-top: 10px; 
+            font-weight: bold;
+            font-size: 14px;
+          }
+          .footer { 
+            text-align: center; 
+            margin-top: 20px; 
+            font-size: 10px;
+            color: #666;
+          }
+          .thank-you {
+            font-style: italic;
+            margin-top: 10px;
+            color: #8B4513;
+          }
+          .receipt-info {
+            font-size: 10px;
+            color: #666;
+            margin: 5px 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="logo-container">
+          <div class="logo">☕</div>
+        </div>
+        
+        <div class="header">
+          <h2>MAGALY CAFÉ</h2>
+          <div class="receipt-info">${new Date(sale.date).toLocaleString('fr-FR')}</div>
+          <div class="receipt-info">Reçu #${sale.id}</div>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
           ${sale.items.map(item => `
             <div class="item">
               <div class="item-name">${item.name}</div>
@@ -260,20 +316,32 @@ const SalesTerminal = ({ user }) => {
               <div class="item-price">${(item.price * item.quantity).toFixed(0)} FCFA</div>
             </div>
           `).join('')}
-          <div class="item total">
-            <div>TOTAL</div>
-            <div>${sale.total.toFixed(0)} FCFA</div>
-          </div>
-          <div class="footer">
-            <p>Merci de votre visite !</p>
-            <p class="thank-you">À bientôt au Magaly Café</p>
-          </div>
-        </body>
-      </html>
-    `)
-    receiptWindow.document.close()
-  }
-
+        </div>
+        
+        <div class="item total">
+          <div>TOTAL</div>
+          <div>${sale.total.toFixed(0)} FCFA</div>
+        </div>
+        
+        <div class="footer">
+          <p>Merci de votre visite !</p>
+          <p class="thank-you">À bientôt au Magaly Café</p>
+          <p style="margin-top: 10px; font-size: 9px;">
+            Reçu électronique - Conservez ce reçu
+          </p>
+        </div>
+        
+        <script>
+          // Impression automatique
+          setTimeout(() => {
+            window.print();
+          }, 500);
+        </script>
+      </body>
+    </html>
+  `)
+  receiptWindow.document.close()
+}
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
 
   const getProductStockStatus = (product) => {
