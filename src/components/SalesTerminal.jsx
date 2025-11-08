@@ -191,124 +191,162 @@ const SalesTerminal = ({ user }) => {
   const generateReceipt = (sale) => {
   const receiptWindow = window.open('', '_blank')
   
-  // Créer le logo en base64 ou utiliser l'URL
-  const logoHTML = `
-    <div style="text-align: center; margin-bottom: 10px;">
-      <div style="
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-        margin: 0 auto 10px auto;
-      ">☕</div>
-    </div>
-  `
-
+  // Essayer de charger le logo depuis public/logo.png
+  const logoUrl = '/logo.png'
+  
   receiptWindow.document.write(`
     <html>
       <head>
         <title>Reçu Magaly Café</title>
         <style>
+          @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
+          
           body { 
-            font-family: 'Courier New', monospace; 
+            font-family: 'Roboto Mono', 'Courier New', monospace; 
             padding: 15px; 
             max-width: 300px; 
             margin: 0 auto;
             background: white;
             font-size: 12px;
+            line-height: 1.4;
           }
+          
+          .receipt-logo {
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 10px 0;
+          }
+          
+          .logo-image {
+            max-width: 80px;
+            height: auto;
+            border-radius: 8px;
+          }
+          
+          .logo-fallback {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto;
+          }
+          
           .header { 
             text-align: center; 
             margin-bottom: 15px;
             border-bottom: 2px dashed #000;
             padding-bottom: 10px;
           }
+          
           .header h2 {
             margin: 5px 0;
             color: #8B4513;
             font-size: 18px;
+            font-weight: 700;
           }
-          .logo-container {
-            text-align: center;
-            margin-bottom: 10px;
+          
+          .receipt-info {
+            font-size: 10px;
+            color: #666;
+            margin: 3px 0;
           }
-          .logo {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0 auto;
+          
+          .items-list {
+            margin: 15px 0;
           }
+          
           .item { 
             display: flex; 
             justify-content: space-between; 
-            margin: 6px 0;
-            padding: 3px 0;
+            margin: 8px 0;
+            padding: 5px 0;
             border-bottom: 1px dotted #ddd;
           }
+          
           .item-name {
             flex: 2;
-            font-weight: bold;
+            font-weight: 600;
           }
+          
           .item-quantity {
             flex: 1;
             text-align: center;
+            font-weight: 500;
           }
+          
           .item-price {
             flex: 1;
             text-align: right;
+            font-weight: 600;
           }
+          
           .total { 
             border-top: 2px dashed #000; 
             margin-top: 15px; 
-            padding-top: 10px; 
+            padding-top: 12px; 
             font-weight: bold;
             font-size: 14px;
           }
+          
           .footer { 
             text-align: center; 
             margin-top: 20px; 
             font-size: 10px;
             color: #666;
           }
+          
           .thank-you {
             font-style: italic;
             margin-top: 10px;
             color: #8B4513;
+            font-weight: 500;
           }
-          .receipt-info {
-            font-size: 10px;
-            color: #666;
-            margin: 5px 0;
+          
+          .separator {
+            border-top: 1px dashed #ccc;
+            margin: 10px 0;
+          }
+          
+          @media print {
+            body {
+              padding: 10px;
+              font-size: 11px;
+            }
+            
+            .receipt-logo {
+              margin-bottom: 5px;
+            }
           }
         </style>
       </head>
       <body>
-        <div class="logo-container">
-          <div class="logo">☕</div>
+        <!-- Logo -->
+        <div class="receipt-logo">
+          <img 
+            src="${logoUrl}" 
+            alt="Magaly Café" 
+            class="logo-image"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';"
+          />
+          <div id="logoFallback" class="logo-fallback" style="display: none;">
+            ☕
+          </div>
         </div>
         
         <div class="header">
           <h2>MAGALY CAFÉ</h2>
           <div class="receipt-info">${new Date(sale.date).toLocaleString('fr-FR')}</div>
-          <div class="receipt-info">Reçu #${sale.id}</div>
+          <div class="receipt-info">Reçu #${sale.id.toString().slice(-6)}</div>
+          <div class="receipt-info">Caissier: ${user?.name || 'Non spécifié'}</div>
         </div>
         
-        <div style="margin-bottom: 10px;">
+        <div class="items-list">
           ${sale.items.map(item => `
             <div class="item">
               <div class="item-name">${item.name}</div>
@@ -318,24 +356,41 @@ const SalesTerminal = ({ user }) => {
           `).join('')}
         </div>
         
+        <div class="separator"></div>
+        
         <div class="item total">
           <div>TOTAL</div>
           <div>${sale.total.toFixed(0)} FCFA</div>
         </div>
         
         <div class="footer">
-          <p>Merci de votre visite !</p>
-          <p class="thank-you">À bientôt au Magaly Café</p>
-          <p style="margin-top: 10px; font-size: 9px;">
-            Reçu électronique - Conservez ce reçu
+          <p>Merci pour votre confiance !</p>
+          <p class="thank-you">À très bientôt au Magaly Café</p>
+          <div class="separator"></div>
+          <p style="margin-top: 15px; font-size: 9px; opacity: 0.7;">
+            Reçu électronique • Conservez ce reçu<br>
+            Tél: +225 XX XX XX XX • Email: contact@magalycafe.ci
           </p>
         </div>
         
         <script>
-          // Impression automatique
+          // Vérifier si le logo charge
           setTimeout(() => {
-            window.print();
-          }, 500);
+            const logoImg = document.querySelector('.logo-image');
+            const logoFallback = document.getElementById('logoFallback');
+            
+            if (logoImg && !logoImg.complete) {
+              logoImg.onerror = function() {
+                this.style.display = 'none';
+                logoFallback.style.display = 'flex';
+              };
+            }
+            
+            // Impression automatique après 1 seconde
+            setTimeout(() => {
+              window.print();
+            }, 1000);
+          }, 100);
         </script>
       </body>
     </html>

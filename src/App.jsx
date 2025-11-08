@@ -199,7 +199,7 @@ const getTabs = () => {
       {/* Header commun pour toute l'app */}
       <Header user={user} onLogout={handleLogout} roleBadge={roleBadge} />
 
-      // Dans la partie return de App.jsx, remplacez la navigation par :
+      
 <nav className="app-nav">
   <div className="nav-content">
     <div className="user-role-indicator">
