@@ -539,3 +539,203 @@ body {
 .logout-btn:hover {
   background: #c82333;
 }
+
+/* Styles pour la navigation améliorée */
+.nav-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+  background: #f8f9fa;
+}
+
+.user-role-indicator {
+  display: flex;
+  justify-content: center;
+}
+
+.role-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.nav-buttons {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.nav-btn-text {
+  transition: transform 0.2s ease;
+}
+
+.nav-btn:hover .nav-btn-text {
+  transform: translateX(3px);
+}
+
+/* Footer de l'application */
+.app-footer {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 15px 20px;
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 12px;
+  color: #666;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-tag {
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.app-version {
+  font-weight: 500;
+  color: #8B4513;
+}
+
+/* Améliorations pour le header */
+.app-header {
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+}
+
+/* Animation pour les changements d'onglets */
+.app-main {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-header {
+    padding: 12px 15px;
+  }
+  
+  .role-badge {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .nav-btn {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+  
+  .nav-btn-text {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-header {
+    padding: 10px 12px;
+  }
+  
+  .role-badge {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  
+  .nav-btn {
+    padding: 10px 12px;
+  }
+  
+  .nav-btn-text {
+    font-size: 12px;
+  }
+  
+  .app-footer {
+    padding: 12px 15px;
+  }
+  
+  .footer-content {
+    font-size: 11px;
+  }
+}
+
+/* Styles pour le dark mode */
+@media (prefers-color-scheme: dark) {
+  .nav-header {
+    background: #2d3748;
+    border-bottom-color: #4a5568;
+  }
+  
+  .app-footer {
+    background: #2d3748;
+    border-top-color: #4a5568;
+    color: #cbd5e0;
+  }
+  
+  .app-version {
+    color: #D2691E;
+  }
+}
+
+/* Indication visuelle pour l'hyper-admin */
+.role-badge[style*="#ff6b35"] {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0);
+  }
+}
+
+/* Amélioration des toasts */
+.Toastify__toast {
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+}
+
+.Toastify__toast-body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
