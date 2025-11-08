@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Users, Plus, Edit3, Trash2, Shield, UserPlus, Save, X } from 'lucide-react'
 import { toast } from 'react-hot-toast'
+import { userManager } from '../utils/userManager'
 import '../styles/UserManagement.css'
 
 const UserManagement = ({ user }) => {
@@ -22,15 +23,25 @@ const UserManagement = ({ user }) => {
   }, [])
 
   const loadUsers = () => {
-    const savedUsers = localStorage.getItem('cafeUsers')
-    if (savedUsers) {
-      setUsers(JSON.parse(savedUsers))
+    try {
+      const allUsers = userManager.getUsers()
+      console.log('📋 Tous les utilisateurs chargés:', allUsers)
+      setUsers(allUsers)
+    } catch (error) {
+      console.error('Erreur chargement utilisateurs:', error)
+      toast.error('Erreur lors du chargement des utilisateurs')
     }
   }
 
   const saveUsers = (updatedUsers) => {
-    localStorage.setItem('cafeUsers', JSON.stringify(updatedUsers))
-    setUsers(updatedUsers)
+    try {
+      localStorage.setItem('cafeUsers', JSON.stringify(updatedUsers))
+      setUsers(updatedUsers)
+      console.log('💾 Utilisateurs sauvegardés:', updatedUsers)
+    } catch (error) {
+      console.error('Erreur sauvegarde utilisateurs:', error)
+      toast.error('Erreur lors de la sauvegarde')
+    }
   }
 
   const handleAddUser = () => {
@@ -79,6 +90,13 @@ const UserManagement = ({ user }) => {
       return
     }
 
+    // Empêcher la suppression du dernier admin
+    const adminUsers = users.filter(u => u.role === 'admin' || u.role === 'hyperadmin')
+    if (adminUsers.length <= 1 && (userToDelete.role === 'admin' || userToDelete.role === 'hyperadmin')) {
+      toast.error('Impossible de supprimer le dernier administrateur')
+      return
+    }
+
     if (window.confirm(`Supprimer l'utilisateur ${userToDelete.name} ?`)) {
       const updatedUsers = users.filter(u => u.username !== userToDelete.username)
       saveUsers(updatedUsers)
@@ -94,6 +112,15 @@ const UserManagement = ({ user }) => {
       'serveur': { label: 'Serveur', color: '#4682B4' }
     }
     return roles[role] || { label: role, color: '#666' }
+  }
+
+  // Fonction pour réinitialiser les utilisateurs par défaut
+  const resetToDefaultUsers = () => {
+    if (window.confirm('Voulez-vous réinitialiser tous les utilisateurs aux valeurs par défaut ?')) {
+      userManager.initializeUsers()
+      loadUsers()
+      toast.success('Utilisateurs réinitialisés avec succès')
+    }
   }
 
   if (!canManageUsers) {
@@ -119,6 +146,15 @@ const UserManagement = ({ user }) => {
           Gestion des Utilisateurs
         </h2>
         <p>Créez et gérez les comptes utilisateurs du système</p>
+        
+        {/* Bouton de réinitialisation */}
+        <button 
+          className="reset-users-btn"
+          onClick={resetToDefaultUsers}
+          title="Restaurer les utilisateurs par défaut"
+        >
+          🔄 Réinitialiser
+        </button>
       </div>
 
       {/* Statistiques */}
@@ -130,6 +166,10 @@ const UserManagement = ({ user }) => {
         <div className="stat-card">
           <span className="stat-number">{users.filter(u => u.role === 'serveur').length}</span>
           <span className="stat-label">Serveurs</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-number">{users.filter(u => u.role === 'gerant').length}</span>
+          <span className="stat-label">Gérants</span>
         </div>
         <div className="stat-card">
           <span className="stat-number">{users.filter(u => u.role === 'admin' || u.role === 'hyperadmin').length}</span>
@@ -151,32 +191,45 @@ const UserManagement = ({ user }) => {
           <div className="add-user-form">
             <h4>Nouvel Utilisateur</h4>
             <div className="form-grid">
-              <input
-                type="text"
-                placeholder="Nom complet"
-                value={newUser.name}
-                onChange={(e) => setNewUser({...newUser, name: e.target.value})}
-              />
-              <input
-                type="text"
-                placeholder="Nom d'utilisateur"
-                value={newUser.username}
-                onChange={(e) => setNewUser({...newUser, username: e.target.value})}
-              />
-              <input
-                type="password"
-                placeholder="Mot de passe"
-                value={newUser.password}
-                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-              />
-              <select
-                value={newUser.role}
-                onChange={(e) => setNewUser({...newUser, role: e.target.value})}
-              >
-                <option value="serveur">Serveur</option>
-                <option value="gerant">Gérant</option>
-                {user.role === 'hyperadmin' && <option value="admin">Administrateur</option>}
-              </select>
+              <div className="form-group">
+                <label>Nom complet *</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Jean Dupont"
+                  value={newUser.name}
+                  onChange={(e) => setNewUser({...newUser, name: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Nom d'utilisateur *</label>
+                <input
+                  type="text"
+                  placeholder="Ex: jean.dupont"
+                  value={newUser.username}
+                  onChange={(e) => setNewUser({...newUser, username: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Mot de passe *</label>
+                <input
+                  type="password"
+                  placeholder="Mot de passe sécurisé"
+                  value={newUser.password}
+                  onChange={(e) => setNewUser({...newUser, password: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Rôle *</label>
+                <select
+                  value={newUser.role}
+                  onChange={(e) => setNewUser({...newUser, role: e.target.value})}
+                >
+                  <option value="serveur">Serveur</option>
+                  <option value="gerant">Gérant</option>
+                  {user.role === 'hyperadmin' && <option value="admin">Administrateur</option>}
+                  {user.role === 'hyperadmin' && <option value="hyperadmin">Hyper Administrateur</option>}
+                </select>
+              </div>
             </div>
             <button className="save-btn" onClick={handleAddUser}>
               <Save size={16} />
@@ -188,86 +241,103 @@ const UserManagement = ({ user }) => {
 
       {/* Liste des utilisateurs */}
       <div className="users-list">
-        <h3>Liste des Utilisateurs</h3>
-        <div className="users-table">
-          <div className="table-header">
-            <span>Utilisateur</span>
-            <span>Rôle</span>
-            <span>Actions</span>
+        <h3>Liste des Utilisateurs ({users.length})</h3>
+        
+        {users.length === 0 ? (
+          <div className="no-users">
+            <p>Aucun utilisateur trouvé.</p>
+            <button onClick={resetToDefaultUsers} className="reset-btn">
+              Charger les utilisateurs par défaut
+            </button>
           </div>
-          {users.map((userItem, index) => (
-            <div key={userItem.username} className="table-row">
-              {editingUser && editingUser.username === userItem.username ? (
-                // Mode édition
-                <>
-                  <div className="user-info">
-                    <input
-                      type="text"
-                      value={editingUser.name}
-                      onChange={(e) => setEditingUser({...editingUser, name: e.target.value})}
-                    />
-                    <input
-                      type="text"
-                      value={editingUser.username}
-                      onChange={(e) => setEditingUser({...editingUser, username: e.target.value})}
-                    />
-                  </div>
-                  <div className="user-role">
-                    <select
-                      value={editingUser.role}
-                      onChange={(e) => setEditingUser({...editingUser, role: e.target.value})}
-                    >
-                      <option value="serveur">Serveur</option>
-                      <option value="gerant">Gérant</option>
-                      {user.role === 'hyperadmin' && <option value="admin">Admin</option>}
-                      {user.role === 'hyperadmin' && <option value="hyperadmin">Hyper Admin</option>}
-                    </select>
-                  </div>
-                  <div className="user-actions">
-                    <button className="action-btn save" onClick={handleSaveEdit}>
-                      <Save size={14} />
-                    </button>
-                    <button className="action-btn cancel" onClick={() => setEditingUser(null)}>
-                      <X size={14} />
-                    </button>
-                  </div>
-                </>
-              ) : (
-                // Mode affichage
-                <>
-                  <div className="user-info">
-                    <strong>{userItem.name}</strong>
-                    <span>@{userItem.username}</span>
-                  </div>
-                  <div className="user-role">
-                    <span 
-                      className="role-badge"
-                      style={{ backgroundColor: getRoleBadge(userItem.role).color }}
-                    >
-                      {getRoleBadge(userItem.role).label}
-                    </span>
-                  </div>
-                  <div className="user-actions">
-                    <button 
-                      className="action-btn edit"
-                      onClick={() => handleEditUser(userItem)}
-                      disabled={userItem.username === user.username}
-                    >
-                      <Edit3 size={14} />
-                    </button>
-                    <button 
-                      className="action-btn delete"
-                      onClick={() => handleDeleteUser(userItem)}
-                      disabled={userItem.username === user.username}
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </>
-              )}
+        ) : (
+          <div className="users-table">
+            <div className="table-header">
+              <span>Utilisateur</span>
+              <span>Rôle</span>
+              <span>Actions</span>
             </div>
-          ))}
-        </div>
+            {users.map((userItem) => (
+              <div key={userItem.username} className="table-row">
+                {editingUser && editingUser.username === userItem.username ? (
+                  // Mode édition
+                  <>
+                    <div className="user-info">
+                      <input
+                        type="text"
+                        value={editingUser.name}
+                        onChange={(e) => setEditingUser({...editingUser, name: e.target.value})}
+                        placeholder="Nom complet"
+                      />
+                      <input
+                        type="text"
+                        value={editingUser.username}
+                        onChange={(e) => setEditingUser({...editingUser, username: e.target.value})}
+                        placeholder="Nom d'utilisateur"
+                      />
+                    </div>
+                    <div className="user-role">
+                      <select
+                        value={editingUser.role}
+                        onChange={(e) => setEditingUser({...editingUser, role: e.target.value})}
+                      >
+                        <option value="serveur">Serveur</option>
+                        <option value="gerant">Gérant</option>
+                        {user.role === 'hyperadmin' && <option value="admin">Admin</option>}
+                        {user.role === 'hyperadmin' && <option value="hyperadmin">Hyper Admin</option>}
+                      </select>
+                    </div>
+                    <div className="user-actions">
+                      <button className="action-btn save" onClick={handleSaveEdit}>
+                        <Save size={14} />
+                      </button>
+                      <button className="action-btn cancel" onClick={() => setEditingUser(null)}>
+                        <X size={14} />
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  // Mode affichage
+                  <>
+                    <div className="user-info">
+                      <strong>{userItem.name}</strong>
+                      <span>@{userItem.username}</span>
+                    </div>
+                    <div className="user-role">
+                      <span 
+                        className="role-badge"
+                        style={{ backgroundColor: getRoleBadge(userItem.role).color }}
+                      >
+                        {getRoleBadge(userItem.role).icon && 
+                         React.createElement(getRoleBadge(userItem.role).icon, { size: 12 })}
+                        {getRoleBadge(userItem.role).label}
+                      </span>
+                    </div>
+                    <div className="user-actions">
+                      <button 
+                        className="action-btn edit"
+                        onClick={() => handleEditUser(userItem)}
+                        disabled={userItem.username === user.username}
+                        title="Modifier"
+                      >
+                        <Edit3 size={14} />
+                      </button>
+                      <button 
+                        className="action-btn delete"
+                        onClick={() => handleDeleteUser(userItem)}
+                        disabled={userItem.username === user.username || 
+                                 (user.role === 'admin' && userItem.role === 'hyperadmin')}
+                        title="Supprimer"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
