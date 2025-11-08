@@ -9,14 +9,6 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [users, setUsers] = useState([])
-
-  // Charger les utilisateurs au démarrage
-  useEffect(() => {
-    const initializedUsers = userManager.initializeUsers()
-    setUsers(initializedUsers)
-    console.log('Utilisateurs initialisés:', initializedUsers)
-  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -41,8 +33,6 @@ const Login = ({ onLogin }) => {
         toast.success(`Bienvenue ${user.name} !`)
       } else {
         toast.error('Identifiants incorrects')
-        console.log('Tentative de connexion échouée:', username)
-        console.log('Utilisateurs disponibles:', users)
       }
     } catch (error) {
       console.error('Erreur lors de la connexion:', error)
@@ -54,20 +44,6 @@ const Login = ({ onLogin }) => {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
-  }
-
-  // Comptes de démonstration
-  const demoAccounts = [
-    { username: 'hyperadmin', password: 'hyperadmin123', role: '🚨 Hyper Admin' },
-    { username: 'admin', password: 'admin123', role: '⚙️ Admin' },
-    { username: 'gerant', password: 'gerant123', role: '👔 Gérant' },
-    { username: 'serveur', password: 'serveur123', role: '☕ Serveur' }
-  ]
-
-  const fillDemoAccount = (account) => {
-    setUsername(account.username)
-    setPassword(account.password)
-    toast.success(`Compte ${account.role} rempli !`)
   }
 
   return (
@@ -82,10 +58,53 @@ const Login = ({ onLogin }) => {
         {/* Header avec logo */}
         <div className="login-header">
           <div className="logo-container">
-            <div className="coffee-icon">☕</div>
+            <div style={{
+              position: 'relative',
+              width: '80px',
+              height: '80px',
+              marginBottom: '1rem'
+            }}>
+              {/* Fallback toujours visible */}
+              <div style={{
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(135deg, #8B4513 0%, #D2691E 100%)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: '32px',
+                fontWeight: 'bold',
+                boxShadow: '0 8px 25px rgba(139, 69, 19, 0.4)',
+                border: '3px solid rgba(255, 255, 255, 0.3)'
+              }}>
+                ☕
+              </div>
+              
+              {/* Logo qui se superpose si disponible */}
+              <img 
+                src="/logo.png" 
+                alt="Magaly Café" 
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  borderRadius: '50%',
+                  padding: '8px'
+                }}
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                }}
+              />
+            </div>
+            
             <div className="logo-text">
               <h1>Magaly Café</h1>
-              <p>Système de Gestion Professionnelle</p>
+              <p>Gestion Professionnelle</p>
             </div>
           </div>
         </div>
@@ -93,12 +112,13 @@ const Login = ({ onLogin }) => {
         {/* Formulaire */}
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-title">
-            <h2>Connexion</h2>
-            <p>Accédez à votre espace de travail</p>
+            <h2>Connexion Système</h2>
+            <p>Identifiez-vous pour accéder au tableau de bord</p>
           </div>
 
           {/* Champ nom d'utilisateur */}
           <div className="input-group">
+            <label className="input-label">Nom d'utilisateur</label>
             <div className="input-container">
               <User className="input-icon" size={20} />
               <input
@@ -106,7 +126,7 @@ const Login = ({ onLogin }) => {
                 className="login-input"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Nom d'utilisateur"
+                placeholder="Votre nom d'utilisateur"
                 required
                 disabled={isLoading}
               />
@@ -115,6 +135,7 @@ const Login = ({ onLogin }) => {
 
           {/* Champ mot de passe */}
           <div className="input-group">
+            <label className="input-label">Mot de passe</label>
             <div className="input-container">
               <Lock className="input-icon" size={20} />
               <input
@@ -122,7 +143,7 @@ const Login = ({ onLogin }) => {
                 className="login-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Mot de passe"
+                placeholder="Votre mot de passe"
                 required
                 disabled={isLoading}
               />
@@ -146,7 +167,7 @@ const Login = ({ onLogin }) => {
             {isLoading ? (
               <>
                 <div className="loading-spinner"></div>
-                Connexion...
+                Connexion en cours...
               </>
             ) : (
               'Se connecter'
@@ -154,24 +175,19 @@ const Login = ({ onLogin }) => {
           </button>
         </form>
 
-        {/* Comptes de démonstration avec boutons */}
-        <div className="login-help">
-          <p><strong>Comptes de démonstration :</strong></p>
-          <div className="demo-accounts-grid">
-            {demoAccounts.map((account, index) => (
-              <button
-                key={index}
-                type="button"
-                className="demo-account-btn"
-                onClick={() => fillDemoAccount(account)}
-                disabled={isLoading}
-              >
-                <span className="demo-role">{account.role}</span>
-                <span className="demo-credentials">
-                  {account.username} / {account.password}
-                </span>
-              </button>
-            ))}
+        {/* Informations de connexion discrètes */}
+        <div className="login-info">
+          <div className="info-item">
+            <strong>Hyper Admin:</strong> hyperadmin / hyperadmin123
+          </div>
+          <div className="info-item">
+            <strong>Admin:</strong> admin / admin123
+          </div>
+          <div className="info-item">
+            <strong>Gérant:</strong> gerant / gerant123
+          </div>
+          <div className="info-item">
+            <strong>Serveur:</strong> serveur / serveur123
           </div>
         </div>
 
@@ -179,10 +195,10 @@ const Login = ({ onLogin }) => {
         <div className="login-footer">
           <div className="security-info">
             <Shield className="security-icon" size={16} />
-            <span>Système sécurisé</span>
+            <span>Accès sécurisé</span>
           </div>
           <div className="version-info">
-            v1.0.0
+            Magaly Café v1.0
           </div>
         </div>
       </div>
