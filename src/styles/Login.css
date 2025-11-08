@@ -198,3 +198,73 @@
 .login-card {
   animation: cardEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* Styles pour les comptes de démonstration */
+.demo-accounts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.demo-account-btn {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(139, 69, 19, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  backdrop-filter: blur(10px);
+}
+
+.demo-account-btn:hover:not(:disabled) {
+  background: rgba(139, 69, 19, 0.1);
+  transform: translateX(5px);
+  border-color: rgba(139, 69, 19, 0.4);
+}
+
+.demo-account-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.demo-role {
+  display: block;
+  font-weight: 600;
+  color: #8B4513;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.demo-credentials {
+  display: block;
+  font-size: 11px;
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+/* Responsive pour les boutons de démo */
+@media (max-width: 768px) {
+  .demo-account-btn {
+    padding: 10px;
+  }
+  
+  .demo-role {
+    font-size: 11px;
+  }
+  
+  .demo-credentials {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-accounts-grid {
+    gap: 6px;
+  }
+  
+  .demo-account-btn {
+    padding: 8px;
+  }
+}
