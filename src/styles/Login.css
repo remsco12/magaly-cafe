@@ -261,21 +261,6 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Informations de connexion discrètes */
-.login-info {
-  background: rgba(139, 69, 19, 0.05);
-  border: 1px solid rgba(139, 69, 19, 0.1);
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.info-item {
-  font-size: 0.8rem;
-  color: #666;
-  margin-bottom: 0.25rem;
-  font-family: 'Courier New', monospace;
-}
 
 .info-item:last-child {
   margin-bottom: 0;
@@ -471,3 +456,41 @@
     color: #888;
   }
 }
+
+/* Message d'accueil professionnel */
+.login-welcome {
+  background: rgba(139, 69, 19, 0.05);
+  border: 1px solid rgba(139, 69, 19, 0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.welcome-message h4 {
+  color: #8B4513;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.welcome-message p {
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.support-info {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.support-info span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Supprimer les anciens styles pour  et .info-item */

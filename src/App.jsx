@@ -149,7 +149,7 @@ function App() {
         id: 'users', 
         name: 'Utilisateurs', 
         icon: Users, 
-        roles: ['hyperadmin'] 
+        roles: ['hyperadmin', 'admin'] 
       },
       { 
         id: 'notifications', 

@@ -175,21 +175,17 @@ const Login = ({ onLogin }) => {
           </button>
         </form>
 
-        {/* Informations de connexion discrètes */}
-        <div className="login-info">
-          <div className="info-item">
-            <strong>Hyper Admin:</strong> hyperadmin / hyperadmin123
-          </div>
-          <div className="info-item">
-            <strong>Admin:</strong> admin / admin123
-          </div>
-          <div className="info-item">
-            <strong>Gérant:</strong> gerant / gerant123
-          </div>
-          <div className="info-item">
-            <strong>Serveur:</strong> serveur / serveur123
-          </div>
-        </div>
+        {/* Message d'accueil professionnel */}
+<div className="login-welcome">
+  <div className="welcome-message">
+    <h4>Bienvenue au Magaly Café</h4>
+    <p>Veuillez vous connecter avec vos identifiants pour accéder au système de gestion.</p>
+    <div className="support-info">
+      <span>🔒 Système sécurisé</span>
+      <span>📞 Support technique disponible</span>
+    </div>
+  </div>
+</div>
 
         {/* Footer */}
         <div className="login-footer">
