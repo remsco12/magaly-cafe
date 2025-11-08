@@ -105,54 +105,54 @@ function App() {
   }
 
   // Définir les onglets accessibles par rôle
-  const getTabs = () => {
-    const allTabs = [
-      { 
-        id: 'dashboard', 
-        name: 'Tableau de Bord', 
-        icon: BarChart3, 
-        roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
-      },
-      { 
-        id: 'sales', 
-        name: 'Ventes', 
-        icon: Coffee, 
-        roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
-      },
-      { 
-        id: 'stock', 
-        name: 'Stock', 
-        icon: Package, 
-        roles: ['hyperadmin', 'admin', 'gerant'] 
-      },
-      { 
-        id: 'prices', 
-        name: 'Prix', 
-        icon: DollarSign, 
-        roles: ['hyperadmin', 'admin'] 
-      },
-      { 
-        id: 'statistics', 
-        name: 'Statistiques', 
-        icon: BarChart3, 
-        roles: ['hyperadmin', 'admin'] 
-      },
-      { 
-        id: 'users', 
-        name: 'Utilisateurs', 
-        icon: Users, 
-        roles: ['hyperadmin']  // SEUL l'hyper-admin peut gérer les utilisateurs
-      },
-      { 
-        id: 'notifications', 
-        name: 'Notifications', 
-        icon: Bell, 
-        roles: ['hyperadmin', 'admin', 'gerant'] 
-      }
-    ]
+const getTabs = () => {
+  const allTabs = [
+    { 
+      id: 'dashboard', 
+      name: 'Tableau de Bord', 
+      icon: BarChart3, 
+      roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
+    },
+    { 
+      id: 'sales', 
+      name: 'Ventes', 
+      icon: Coffee, 
+      roles: ['hyperadmin', 'admin', 'gerant', 'serveur'] 
+    },
+    { 
+      id: 'stock', 
+      name: 'Stock', 
+      icon: Package, 
+      roles: ['hyperadmin', 'admin', 'gerant']  // gerant peut gérer le stock
+    },
+    { 
+      id: 'prices', 
+      name: 'Prix', 
+      icon: DollarSign, 
+      roles: ['hyperadmin', 'admin']  // Seulement hyperadmin et admin
+    },
+    { 
+      id: 'statistics', 
+      name: 'Statistiques', 
+      icon: BarChart3, 
+      roles: ['hyperadmin', 'admin']  // Seulement hyperadmin et admin
+    },
+    { 
+      id: 'users', 
+      name: 'Utilisateurs', 
+      icon: Users, 
+      roles: ['hyperadmin']  // SEUL l'hyper-admin peut gérer les utilisateurs
+    },
+    { 
+      id: 'notifications', 
+      name: 'Notifications', 
+      icon: Bell, 
+      roles: ['hyperadmin', 'admin', 'gerant']  // gerant peut voir les notifications
+    }
+  ]
 
-    return allTabs.filter(tab => tab.roles.includes(user?.role))
-  }
+  return allTabs.filter(tab => tab.roles.includes(user?.role))
+}
 
   // Obtenir le badge de rôle stylisé
   const getRoleBadge = (role) => {
