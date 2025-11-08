@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Minus, Trash2, AlertTriangle, Save } from 'lucide-react'
+import { Plus, Minus, Trash2, AlertTriangle, Save, RefreshCw } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import '../styles/StockManagement.css'
 
-const StockManagement = () => {
+const StockManagement = ({ user }) => {
   const [stock, setStock] = useState({})
   const [newIngredient, setNewIngredient] = useState({ 
     name: '', 
@@ -27,6 +27,67 @@ const StockManagement = () => {
       setEditingQuantities(initialEditing)
     }
   }, [])
+
+  // FONCTION DE RÉINITIALISATION POUR ADMINISTRATEURS
+  const resetApplication = () => {
+    if (user.role !== 'admin') {
+      toast.error('❌ Action non autorisée. Administrateur requis.')
+      return
+    }
+
+    if (window.confirm('⚠️ ATTENTION CRITIQUE !\n\nCette action va :\n• Supprimer TOUTES les ventes\n• Réinitialiser TOUT le stock\n• Supprimer tous les utilisateurs (sauf admin)\n• Effacer toutes les statistiques\n\nÊtes-vous ABSOLUMENT sûr ?')) {
+      
+      // Sauvegarder l'admin actuel
+      const currentAdmin = user
+      
+      // Supprimer toutes les données
+      localStorage.removeItem('salesHistory')
+      localStorage.removeItem('cafeProducts')
+      localStorage.removeItem('cafePrices')
+      
+      // Recréer le stock initial
+      const initialStock = {
+        cafe: { name: "Café moulu", quantity: 1000, unit: "g", alert: 100 },
+        lait: { name: "Lait", quantity: 20000, unit: "ml", alert: 2000 },
+        eau: { name: "Eau", quantity: 50000, unit: "ml", alert: 5000 },
+        chocolat: { name: "Chocolat", quantity: 500, unit: "g", alert: 50 },
+        caramel: { name: "Caramel", quantity: 500, unit: "ml", alert: 50 },
+        whisky: { name: "Whisky", quantity: 1000, unit: "ml", alert: 100 },
+        sucre: { name: "Sucre", quantity: 2000, unit: "g", alert: 200 },
+        creme: { name: "Crème", quantity: 5000, unit: "ml", alert: 500 },
+        the_vert: { name: "Thé Vert", quantity: 200, unit: "g", alert: 20 },
+        the_noir: { name: "Thé Noir", quantity: 200, unit: "g", alert: 20 },
+        infusion: { name: "Infusion", quantity: 200, unit: "g", alert: 20 }
+      }
+      
+      localStorage.setItem('cafeStock', JSON.stringify(initialStock))
+      
+      // Recréer les utilisateurs (garder l'admin actuel)
+      const defaultUsers = [
+        { 
+          username: currentAdmin.username, 
+          password: 'admin123', // Réinitialiser le mot de passe
+          role: 'admin', 
+          name: 'Administrateur' 
+        },
+        { 
+          username: 'serveur', 
+          password: 'serveur123', 
+          role: 'serveur', 
+          name: 'Serveur' 
+        }
+      ]
+      localStorage.setItem('cafeUsers', JSON.stringify(defaultUsers))
+      
+      // Remettre l'admin connecté
+      localStorage.setItem('cafeUser', JSON.stringify(currentAdmin))
+      
+      toast.success('✅ Application réinitialisée avec succès!')
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
+    }
+  }
 
   const updateStock = (ingredient, amount) => {
     const updatedStock = {
@@ -158,6 +219,57 @@ const StockManagement = () => {
         <h2>Gestion des Stocks</h2>
         <p>Surveillez et gérez votre inventaire</p>
       </div>
+
+      {/* SECTION ADMINISTRATEUR - BOUTON DE RÉINITIALISATION */}
+      {user && user.role === 'admin' && (
+        <div className="admin-section">
+          <h3 style={{ 
+            color: '#dc3545', 
+            borderBottom: '2px solid #dc3545', 
+            paddingBottom: '10px',
+            marginTop: '20px',
+            marginBottom: '20px'
+          }}>
+            <RefreshCw size={20} style={{ marginRight: '10px' }} />
+            Zone Administrateur
+          </h3>
+          
+          <div className="admin-actions">
+            <button 
+              onClick={resetApplication}
+              className="reset-btn"
+              style={{
+                background: 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)',
+                color: 'white',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginTop: '10px',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <RefreshCw size={18} />
+              Réinitialiser l'Application
+            </button>
+            
+            <p style={{ 
+              fontSize: '12px', 
+              color: '#666', 
+              marginTop: '8px',
+              fontStyle: 'italic',
+              maxWidth: '500px'
+            }}>
+              ⚠️ Attention: Cette action supprime toutes les données (ventes, stock, utilisateurs) et remet l'application à zéro. Réservé aux administrateurs.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Formulaire d'ajout */}
       <div className="add-ingredient-form">
