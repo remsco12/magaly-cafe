@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Toaster, toast } from 'react-hot-toast'
-import { Coffee, Package, BarChart3, Bell, DollarSign, Users, Crown } from 'lucide-react'
+import { CCoffee, Package, BarChart3, Bell, DollarSign, Users, Crown } from 'lucide-react'
 import Dashboard from './components/Dashboard'
 import SalesTerminal from './components/SalesTerminal'
 import StockManagement from './components/StockManagement'
@@ -155,16 +155,32 @@ const getTabs = () => {
 }
 
   // Obtenir le badge de rôle stylisé
-  const getRoleBadge = (role) => {
-    const badges = {
-      'hyperadmin': { label: 'Hyper Admin', color: '#ff6b35', icon: Crown },
-      'admin': { label: 'Administrateur', color: '#8B4513' },
-      'gerant': { label: 'Gérant', color: '#2E8B57' },
-      'serveur': { label: 'Serveur', color: '#4682B4' }
+const getRoleBadge = (role) => {
+  const badges = {
+    'hyperadmin': { 
+      label: 'Hyper Admin', 
+      color: '#ff6b35', 
+      icon: Crown 
+    },
+    'admin': { 
+      label: 'Administrateur', 
+      color: '#8B4513', 
+      icon: Users 
+    },
+    'gerant': { 
+      label: 'Gérant', 
+      color: '#2E8B57', 
+      icon: Users 
+    },
+    'serveur': { 
+      label: 'Serveur', 
+      color: '#4682B4', 
+      icon: Users 
     }
-    
-    return badges[role] || { label: role, color: '#666' }
   }
+  
+  return badges[role] || { label: role, color: '#666', icon: Users }
+}
 
   if (!user) {
     return <Login onLogin={handleLogin} />

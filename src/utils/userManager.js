@@ -29,28 +29,44 @@ export const userManager = {
       }
     ]
 
-    if (!localStorage.getItem('cafeUsers')) {
+    const storedUsers = localStorage.getItem('cafeUsers')
+    if (!storedUsers) {
       localStorage.setItem('cafeUsers', JSON.stringify(defaultUsers))
+      console.log('✅ Utilisateurs par défaut créés:', defaultUsers)
+    } else {
+      console.log('📁 Utilisateurs existants:', JSON.parse(storedUsers))
     }
-    return defaultUsers
+    
+    return storedUsers ? JSON.parse(storedUsers) : defaultUsers
   },
 
   // Récupérer tous les utilisateurs
   getUsers: () => {
     const users = localStorage.getItem('cafeUsers')
-    return users ? JSON.parse(users) : userManager.initializeUsers()
+    if (!users) {
+      return userManager.initializeUsers()
+    }
+    return JSON.parse(users)
   },
 
   // Vérifier les identifiants
   authenticate: (username, password) => {
     const users = userManager.getUsers()
-    const user = users.find(u => u.username === username && u.password === password)
+    console.log('🔍 Recherche utilisateur:', username)
+    console.log('📋 Utilisateurs disponibles:', users)
+    
+    const user = users.find(u => 
+      u.username === username && u.password === password
+    )
+    
+    console.log('✅ Utilisateur trouvé:', user)
     return user || null
   },
 
   // Sauvegarder l'utilisateur connecté
   setCurrentUser: (user) => {
     localStorage.setItem('cafeUser', JSON.stringify(user))
+    console.log('💾 Utilisateur connecté sauvegardé:', user)
   },
 
   // Récupérer l'utilisateur connecté
@@ -62,5 +78,6 @@ export const userManager = {
   // Déconnexion
   logout: () => {
     localStorage.removeItem('cafeUser')
+    console.log('🚪 Utilisateur déconnecté')
   }
 }
