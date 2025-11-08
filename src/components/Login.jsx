@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import { defaultUsers } from '../data/defaultUsers'
-import './Login.css'
+import '../styles/Login.css'
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('')
